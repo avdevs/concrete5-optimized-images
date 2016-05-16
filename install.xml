@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<concrete5-cif version="1.0">
+    <singlepages>
+        <page name="Optimized Images Settings" path="/dashboard/optimized_images_settings"
+              filename="/dashboard/optimized_images_settings.php" pagetype=""
+              description=""
+              package="optimized_images">
+        </page>
+    </singlepages>
+</concrete5-cif>
