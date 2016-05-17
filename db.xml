@@ -8,13 +8,12 @@
         </field>
         <field name="fID" type="I"></field>
     </table>
-
     <table name="atOptimizedImagesSettings">
         <field name="ID" type="I">
             <key/>
             <AUTOINCREMENT/>
             <unsigned/>
         </field>
-        <field name="optimizedImagesQuality" type="I"></field>
+        <field name="tinyPngApiKey" type="C"></field>
     </table>
 </schema>

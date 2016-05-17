@@ -15,14 +15,14 @@ class OptimizedImagesSettings extends DashboardPageController
 
     public function view()
     {
-        $optimizedImagesQuality = OptimizedImageSetting::load();
-        $this->set('optimizedImagesQuality', $optimizedImagesQuality);
+        $optimizedImageSetting = OptimizedImageSetting::load();
+        $this->set('optimizedImageSetting', $optimizedImageSetting);
     }
 
     public function save()
     {
         $OptimizedImagesSettings = new OptimizedImageSetting();
-        $OptimizedImagesSettings->setOptimizedImagesQuality($this->post('optimizedImagesQuality'));
+        $OptimizedImagesSettings->setTinyPngApiKey($this->post('tinyPngApiKey'));
         if($this->post('ID')){
             $OptimizedImagesSettings->setID($this->post('ID'));
             $OptimizedImagesSettings->update();

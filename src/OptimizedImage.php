@@ -5,6 +5,14 @@ use Concrete\Core\Foundation\Object,
     Core;
 
 
+require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify/Exception.php");
+require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify/ResultMeta.php");
+require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify/Result.php");
+require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify/Source.php");
+require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify/Client.php");
+require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify.php");
+
+
 class OptimizedImage extends Object
 {
     public static $table = 'AvDevsFilesToBeOptimized';
@@ -16,30 +24,18 @@ class OptimizedImage extends Object
         return $rows;
     }
 
-    function compress($source, $destination, $quality) {
-        $info = getimagesize($source);
-
-        if ($info['mime'] == 'image/jpeg') {
-            $image = @imagecreatefromjpeg($source);
-            imagejpeg($image, $destination, $quality);
-            imagedestroy($image);
-        }elseif ($info['mime'] == 'image/gif') {
-            $image = @imagecreatefromgif($source);
-            imagegif($image, $destination, $quality);
-            imagedestroy($image);
-        }elseif ($info['mime'] == 'image/png') {
-            $image = imagecreatefrompng($source);
-            imagealphablending($image, false);
-            imagesavealpha($image, true);
-            imagepng($image,$destination, $quality);
-            imagedestroy($image);
-        }
-
-        return $destination;
+    function tinyPngCompress($source, $tinyPngApiKey) {
+        \Tinify\Tinify::setKey($tinyPngApiKey);
+        $optimized = \Tinify\Tinify::fromFile($source);
+        $optimized->toFile($source);
     }
 
     public function save($fID){
         $db = \Database::connection();
-        $result = $db->execute("INSERT INTO `".self::$table."` ( `fID` ) VALUES ( ? );", array($fID));
+        return $db->execute("INSERT INTO `".self::$table."` ( `fID` ) VALUES ( ? );", array($fID));
+    }
+
+    public function on_file_add(){
+        echo "dsdsadsad dsa ads"; die;
     }
 }

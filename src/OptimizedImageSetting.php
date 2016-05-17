@@ -18,18 +18,21 @@ class OptimizedImageSetting extends Object
     protected $ID;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="string")
      */
-    protected $optimizedImagesQuality;
+    protected $tinyPngApiKey;
+
+    public function __construct($data = null)
+    {
+        if ($data) {
+            $this->ID = $data['ID'];
+            $this->tinyPngApiKey = $data['tinyPngApiKey'];
+        }
+    }
 
     public function getID()
     {
         return $this->ID;
-    }
-
-    public function getOptimizedImagesQuality()
-    {
-        return $this->optimizedImagesQuality;
     }
 
     public function setID($id)
@@ -37,9 +40,14 @@ class OptimizedImageSetting extends Object
         return $this->ID  = $id;
     }
 
-    public function setOptimizedImagesQuality($optimizedImagesQuality)
+    public function getTinyPngApiKey()
     {
-        $this->optimizedImagesQuality = $optimizedImagesQuality;
+        return $this->tinyPngApiKey;
+    }
+
+    public function setTinyPngApiKey($tinyPngApiKey)
+    {
+        return $this->tinyPngApiKey  = $tinyPngApiKey;
     }
 
     public function load()
@@ -51,12 +59,12 @@ class OptimizedImageSetting extends Object
 
     public function save(){
         $db = Database::connection();
-        $result = $db->execute("INSERT INTO `".self::$table."` (`ID`, `optimizedImagesQuality`) VALUES (?, ?);", array($this->ID, $this->optimizedImagesQuality));
+        return $db->execute("INSERT INTO `".self::$table."` (`ID`, `tinyPngApiKey`) VALUES (?, ?);", array($this->ID, $this->tinyPngApiKey));
     }
 
     public function update(){
         $db = Database::connection();
-        $result = $db->execute("UPDATE `".self::$table."` SET `optimizedImagesQuality` = ? WHERE `ID` = ? ", array($this->optimizedImagesQuality, $this->ID));
+        return $db->execute("UPDATE `".self::$table."` SET `tinyPngApiKey` = ? WHERE `ID` = ? ", array($this->tinyPngApiKey, $this->ID));
     }
 
 }
