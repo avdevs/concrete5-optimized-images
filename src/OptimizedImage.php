@@ -35,7 +35,4 @@ class OptimizedImage extends Object
         return $db->execute("INSERT INTO `".self::$table."` ( `fID` ) VALUES ( ? );", array($fID));
     }
 
-    public function on_file_add(){
-        echo "dsdsadsad dsa ads"; die;
-    }
 }
