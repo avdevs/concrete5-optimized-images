@@ -28,7 +28,6 @@ class Controller extends Package {
     public function install() {
         $pkg = parent::install();
 
-        \Concrete\Core\Job\Job::installByPackage('optimized_images_job', $pkg);
         $this->installXmlContent();
     }
 
