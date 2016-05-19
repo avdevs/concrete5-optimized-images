@@ -7,4 +7,7 @@
               package="optimized_images">
         </page>
     </singlepages>
+    <jobs>
+        <job handle="optimized_images_job" package="optimized_images"></job>
+    </jobs>	
 </concrete5-cif>
