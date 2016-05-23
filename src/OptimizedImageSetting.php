@@ -7,12 +7,16 @@ use Concrete\Core\Foundation\Object,
     view;
 
 
+/**
+ * @Entity
+ * @Table(name="OptimizedImagesSettings")
+ */
 class OptimizedImageSetting extends Object
 {
-    public static $table = 'atOptimizedImagesSettings';
+    public static $table = 'OptimizedImagesSettings';
 
     /**
-     * @Id @Column(ID)
+     * @Id @Column(type="integer")
      * @GeneratedValue(strategy="AUTO")
      */
     protected $ID;

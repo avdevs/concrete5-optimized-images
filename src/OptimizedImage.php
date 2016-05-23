@@ -13,14 +13,29 @@ require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify/Client.ph
 require_once(DIR_PACKAGES."/optimized_images/vendor/tinypng/lib/Tinify.php");
 
 
+/**
+ * @Entity
+ * @Table(name="AvDevsFilesToBeOptimized")
+ */
 class OptimizedImage extends Object
 {
     public static $table = 'AvDevsFilesToBeOptimized';
 
+    /**
+     * @Id @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
+     */
+    protected $avID;
+
+    /**
+     * @Column(type="integer")
+     */
+    protected $fID;
+
     public function load()
     {
         $db = \Database::connection();
-        $rows = $db->GetAll("SELECT fv.* FROM fileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1 AND fv.fvExtension IN ('jpg','gif','jpeg','png','bmp')");
+        $rows = $db->GetAll("SELECT fv.* FROM fileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1 AND fv.fvExtension IN ('jpg','jpeg','png')");
         return $rows;
     }
 
