@@ -2,7 +2,8 @@
 namespace Concrete\Package\OptimizedImages;
 use Package;
 use Concrete\Core\Backup\ContentImporter;
-
+use Events;
+use Concrete\Package\OptimizedImages\Job\OptimizedImagesJob;
 class Controller extends Package {
 
     protected $pkgHandle = 'optimized_images';
@@ -37,4 +38,7 @@ class Controller extends Package {
         $this->installXmlContent();
     }
 
+    public function on_start() {
+        Events::addListener('on_file_add', function(){ OptimizedImagesJob::run(); } );
+    }
 }

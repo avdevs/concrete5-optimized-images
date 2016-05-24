@@ -35,7 +35,7 @@ class OptimizedImage extends Object
     public function load()
     {
         $db = \Database::connection();
-        $rows = $db->GetAll("SELECT fv.* FROM fileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1 AND fv.fvExtension IN ('jpg','jpeg','png')");
+        $rows = $db->GetAll("SELECT fv.* FROM fileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1");
         return $rows;
     }
 

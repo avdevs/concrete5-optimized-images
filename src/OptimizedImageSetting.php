@@ -26,14 +26,6 @@ class OptimizedImageSetting extends Object
      */
     protected $tinyPngApiKey;
 
-    public function __construct($data = null)
-    {
-        if ($data) {
-            $this->ID = $data['ID'];
-            $this->tinyPngApiKey = $data['tinyPngApiKey'];
-        }
-    }
-
     public function getID()
     {
         return $this->ID;

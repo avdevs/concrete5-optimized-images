@@ -22,7 +22,6 @@ class OptimizedImagesJob extends AbstractJob
 
     public function run()
     {
-
         $fileList = OptimizedImage::load();
 
         $OptimizedImageSetting = new OptimizedImageSetting();
@@ -30,10 +29,15 @@ class OptimizedImagesJob extends AbstractJob
 
         foreach($fileList as $file) {
             OptimizedImage::save($file['fID']);
-
             $fileObject = File::getByID($file['fID']);
-            $source_img = DIR_FILES_UPLOADED_STANDARD.'/'.$fileObject->getFileResource()->getPath();
-            $d = OptimizedImage::tinyPngCompress($source_img,  $OptimizedImage['tinyPngApiKey']);
+            $ext = pathinfo($fileObject->getFileName(), PATHINFO_EXTENSION);
+            $imageExtesions = array("jpg", "jpeg", "png", "JPEG", "PNG", "JPG");
+            if (in_array($ext, $imageExtesions)) {
+                $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
+                if (file_exists($source_img)) {
+                    $d = OptimizedImage::tinyPngCompress($source_img, $OptimizedImage['tinyPngApiKey']);
+                }
+            }
         }
 
     }
