@@ -1,5 +1,5 @@
 <?php
-namespace Concrete\Package\OptimizedImages\Controller\SinglePage\Dashboard;
+namespace Concrete\Package\OptimizedImages\Controller\SinglePage\Dashboard\System\OptimizedImagesSettings;
 
 defined('C5_EXECUTE') or die('Access Denied.');
 
@@ -30,7 +30,7 @@ class OptimizedImagesSettings extends DashboardPageController
             $OptimizedImagesSettings->save();
         }
         $this->flash("message", t('Setting Updated.'));
-        $this->redirect('/dashboard/optimized_images_settings/');
+        $this->redirect('/dashboard/system/optimized_images_settings/optimized_images_settings');
     }
 
 }

@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <concrete5-cif version="1.0">
     <singlepages>
-        <page name="Optimized Images Settings" path="/dashboard/optimized_images_settings"
-              filename="/dashboard/optimized_images_settings.php" pagetype=""
+        <page name="Optimized Images Settings" path="/dashboard/system/optimized_images_settings/optimized_images_settings" filename="/dashboard/system/optimized_images_settings/optimized_images_settings" pagetype=""
+              description=""
+              package="optimized_images">
+        </page>
+        <page name="Settings" path="/dashboard/system/optimized_images_settings/optimized_images_settings" filename="/dashboard/system/optimized_images_settings/optimized_images_settings.php" pagetype=""
               description=""
               package="optimized_images">
         </page>

@@ -8,7 +8,7 @@ class Controller extends Package {
 
     protected $pkgHandle = 'optimized_images';
     protected $appVersionRequired = '5.7.1';
-    protected $pkgVersion = '0.9.7';
+    protected $pkgVersion = '0.9.9';
 
     public function getPackageDescription() {
         return t("Package for optimize your image size");
