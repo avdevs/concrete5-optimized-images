@@ -6,8 +6,9 @@ defined('C5_EXECUTE') or die('Access Denied.');
 use \Concrete\Core\Page\Controller\DashboardPageController,
     Package,
     View,
-    Concrete\Package\OptimizedImages\Src\OptimizedImageSetting;
+    PageController;
 use Database,
+    Loader,
     Core;
 class OptimizedImagesSettings extends DashboardPageController
 {
@@ -15,19 +16,35 @@ class OptimizedImagesSettings extends DashboardPageController
 
     public function view()
     {
-        $optimizedImageSetting = OptimizedImageSetting::load();
-        $this->set('optimizedImageSetting', $optimizedImageSetting);
+        $pkg = Package::getByHandle('optimized_images');
+        $config = $pkg->getConfig();
+
+        $map = $pkg->getConfigMap();
+
+        foreach ($map as $configKey => $formField) {
+            $data = $config->get($configKey);
+
+            // try to convert to an array
+            if (!is_array($data)) {
+                $convertedValue = unserialize($data);
+                if (is_array($convertedValue)) {
+                    $data = $convertedValue;
+                }
+            }
+
+            $this->set($formField, $data);
+        }
     }
 
     public function save()
     {
-        $OptimizedImagesSettings = new OptimizedImageSetting();
-        $OptimizedImagesSettings->setTinyPngApiKey($this->post('tinyPngApiKey'));
-        if($this->post('ID')){
-            $OptimizedImagesSettings->setID($this->post('ID'));
-            $OptimizedImagesSettings->update();
-        }else{
-            $OptimizedImagesSettings->save();
+        $pkg = Package::getByHandle('optimized_images');
+        $config = $pkg->getConfig();
+
+        $map = $pkg->getConfigMap();
+        foreach ($map as $configKey => $formField) {
+            $data = $this->post($formField);
+            $config->save($configKey, $data);
         }
         $this->flash("message", t('Setting Updated.'));
         $this->redirect('/dashboard/system/optimized_images_settings/optimized_images_settings');

@@ -4,8 +4,8 @@ use \Concrete\Core\Job\Job as AbstractJob;
 use Core;
 use Database;
 use Concrete\Package\OptimizedImages\Src\OptimizedImage ;
-use Concrete\Package\OptimizedImages\Src\OptimizedImageSetting;
 use File;
+use Package;
 use Concrete\Core\File\Image\Thumbnail\Type\Type;
 class OptimizedImagesJob extends AbstractJob
 {
@@ -23,9 +23,9 @@ class OptimizedImagesJob extends AbstractJob
     public function run()
     {
         $fileList = OptimizedImage::load();
-
-        $OptimizedImageSetting = new OptimizedImageSetting();
-        $OptimizedImage = $OptimizedImageSetting->load();
+        $pkg = Package::getByHandle('optimized_images');
+        $config = $pkg->getConfig();
+        $tinyPngApiKey = $config->get('optimizedImageSetting.tinyPngApiKey');
 
         foreach($fileList as $file) {
             OptimizedImage::save($file['fID']);
@@ -35,7 +35,7 @@ class OptimizedImagesJob extends AbstractJob
             if (in_array($ext, $imageExtesions)) {
                 $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
                 if (file_exists($source_img)) {
-                    $d = OptimizedImage::tinyPngCompress($source_img, $OptimizedImage['tinyPngApiKey']);
+                    $d = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
                 }
             }
         }
