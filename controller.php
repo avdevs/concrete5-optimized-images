@@ -3,7 +3,7 @@ namespace Concrete\Package\OptimizedImages;
 use Package;
 use Concrete\Core\Backup\ContentImporter;
 use Events;
-use Concrete\Package\OptimizedImages\Job\OptimizedImagesJob;
+use Concrete\Package\OptimizedImages\Src\OptimizedImage ;
 class Controller extends Package {
 
     protected $pkgHandle = 'optimized_images';
@@ -56,6 +56,21 @@ class Controller extends Package {
     }
 
     public function on_start() {
-        Events::addListener('on_file_add', function(){ OptimizedImagesJob::run(); } );
+        Events::addListener('on_file_add', function(){
+            $fileList = OptimizedImage::getLastRecord();
+            $pkg = Package::getByHandle('optimized_images');
+            $config = $pkg->getConfig();
+            $tinyPngApiKey = $config->get('optimizedImageSetting.tinyPngApiKey');
+            OptimizedImage::save($fileList);
+            $fileObject = \File::getByID($fileList);
+            $ext = pathinfo($fileObject->getFileName(), PATHINFO_EXTENSION);
+            $imageExtesions = array("jpg", "jpeg", "png", "JPEG", "PNG", "JPG");
+            if (in_array($ext, $imageExtesions)) {
+                $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
+                if (file_exists($source_img)) {
+                    $d = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
+                }
+            }
+        });
     }
 }

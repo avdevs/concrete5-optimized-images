@@ -39,6 +39,13 @@ class OptimizedImage extends Object
         return $rows;
     }
 
+    public function getLastRecord()
+    {
+        $db = \Database::connection();
+        $rows = $db->GetOne("SELECT fv.fID FROM fileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1 ORDER BY fv.fID DESC LIMIT 1");
+        return $rows;
+    }
+
     function tinyPngCompress($source, $tinyPngApiKey) {
         \Tinify\Tinify::setKey($tinyPngApiKey);
         $optimized = \Tinify\Tinify::fromFile($source);
