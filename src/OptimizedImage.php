@@ -35,14 +35,14 @@ class OptimizedImage extends Object
     public function load()
     {
         $db = \Database::connection();
-        $rows = $db->GetAll("SELECT fv.* FROM fileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1");
+        $rows = $db->GetAll("SELECT fv.* FROM FileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1");
         return $rows;
     }
 
     public function getLastRecord()
     {
         $db = \Database::connection();
-        $rows = $db->GetOne("SELECT fv.fID FROM fileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1 ORDER BY fv.fID DESC LIMIT 1");
+        $rows = $db->GetOne("SELECT fv.fID FROM FileVersions fv left join AvDevsFilesToBeOptimized avd on (fv.fID = avd.fID) WHERE avd.fID IS NULL AND fv.fvIsApproved = 1 ORDER BY fv.fID DESC LIMIT 1");
         return $rows;
     }
 

@@ -64,7 +64,7 @@ class Controller extends Package {
             OptimizedImage::save($fileList);
             $fileObject = \File::getByID($fileList);
             $ext = pathinfo($fileObject->getFileName(), PATHINFO_EXTENSION);
-            $imageExtesions = array("jpg", "jpeg", "png", "JPEG", "PNG", "JPG");
+            $imageExtesions = array('jpg', 'jpeg', 'png', 'JPEG', 'PNG', 'JPG');
             if (in_array($ext, $imageExtesions)) {
                 $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
                 if (file_exists($source_img)) {
