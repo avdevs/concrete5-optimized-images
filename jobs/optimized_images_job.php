@@ -37,6 +37,19 @@ class OptimizedImagesJob extends AbstractJob
                 if (file_exists($source_img)) {
                     $d = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
                 }
+
+                $thumbnailTypeLists = Type::getList();
+                foreach($thumbnailTypeLists as $thumbnailTypeList){
+                    $listType = $thumbnailTypeList->getHandle();
+                    $source_img = DIR_FILES_UPLOADED_STANDARD.'/thumbnails/'.$listType.'/'. $fileObject->getFileResource()->getPath();
+                    if(file_exists($source_img)) {
+                        $td = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
+                    }
+                    $source_img_2x = DIR_FILES_UPLOADED_STANDARD.'/thumbnails/'.$listType.'_2x/'. $fileObject->getFileResource()->getPath();
+                    if(file_exists($source_img_2x)){
+                        $tdx = OptimizedImage::tinyPngCompress($source_img,  $tinyPngApiKey);
+                    }
+                }
             }
         }
 
