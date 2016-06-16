@@ -8,9 +8,10 @@ class Controller extends Package {
 
     protected $pkgHandle = 'optimized_images';
     protected $appVersionRequired = '5.7.1';
-    protected $pkgVersion = '0.9.9';
+    protected $pkgVersion = '0.10.2';
     protected $map = [
         'optimizedImageSetting.tinyPngApiKey' => 'tinyPngApiKey',
+        'optimizedImageSetting.allowCustomThumbOptimize' => 'allowCustomThumbOptimize',
     ];
     public function getPackageDescription() {
         return t("Package for optimize your image size");
