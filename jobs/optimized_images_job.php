@@ -27,8 +27,8 @@ class OptimizedImagesJob extends AbstractJob
         $config = $pkg->getConfig();
         $tinyPngApiKey = $config->get('optimizedImageSetting.tinyPngApiKey');
 
+        $statusMessage = '';
         foreach($fileList as $file) {
-            OptimizedImage::save($file['fID']);
             $fileObject = File::getByID($file['fID']);
             $ext = pathinfo($fileObject->getFileName(), PATHINFO_EXTENSION);
             $imageExtesions = array('jpg', 'jpeg', 'png', 'JPEG', 'PNG', 'JPG');
@@ -36,6 +36,11 @@ class OptimizedImagesJob extends AbstractJob
                 $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
                 if (file_exists($source_img)) {
                     $d = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
+                    if($d){
+                        $statusMessage = $d;
+                        break;
+                    }
+                    OptimizedImage::save($file['fID']);
                 }
 
                 $thumbnailTypeLists = Type::getList();
@@ -44,14 +49,25 @@ class OptimizedImagesJob extends AbstractJob
                     $source_img = DIR_FILES_UPLOADED_STANDARD.'/thumbnails/'.$listType.'/'. $fileObject->getFileResource()->getPath();
                     if(file_exists($source_img)) {
                         $td = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
+                        if($td){
+                            $statusMessage = $td;
+                            break;
+                        }
                     }
                     $source_img_2x = DIR_FILES_UPLOADED_STANDARD.'/thumbnails/'.$listType.'_2x/'. $fileObject->getFileResource()->getPath();
                     if(file_exists($source_img_2x)){
                         $tdx = OptimizedImage::tinyPngCompress($source_img,  $tinyPngApiKey);
+                        if($tdx){
+                            $statusMessage = $tdx;
+                            break;
+                        }
                     }
                 }
             }
         }
 
+        if($statusMessage != ''){
+            return t($statusMessage);
+        }
     }
 }

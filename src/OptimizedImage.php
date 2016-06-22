@@ -47,9 +47,28 @@ class OptimizedImage extends Object
     }
 
     function tinyPngCompress($source, $tinyPngApiKey) {
-        \Tinify\Tinify::setKey($tinyPngApiKey);
-        $optimized = \Tinify\Tinify::fromFile($source);
-        $optimized->toFile($source);
+        try {
+            \Tinify\Tinify::setKey($tinyPngApiKey);
+            \Tinify\validate();
+        } catch(\Tinify\Exception $e) {
+            return $e->getMessage(); // Validation of API key
+        }
+
+        try {
+            $optimized = \Tinify\Tinify::fromFile($source);
+            $optimized->toFile($source);
+            return false;
+        } catch(\Tinify\AccountException $e) {
+            return $e->getMessage(); // Verify API key and account limit.
+        } catch(\Tinify\ClientException $e) {
+            return $e->getMessage(); // Check source image and request options.
+        } catch(\Tinify\ServerException $e) {
+            return $e->getMessage(); // Temporary issue with the Tinify API.
+        } catch(\Tinify\ConnectionException $e) {
+            return $e->getMessage(); // A network connection error occurred.
+        } catch(Exception $e) {
+            return $e->getMessage(); // Something else went wrong, unrelated to the Tinify API.
+        }
     }
 
     public function save($fID){

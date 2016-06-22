@@ -62,7 +62,6 @@ class Controller extends Package {
             $pkg = Package::getByHandle('optimized_images');
             $config = $pkg->getConfig();
             $tinyPngApiKey = $config->get('optimizedImageSetting.tinyPngApiKey');
-            OptimizedImage::save($fileList);
             $fileObject = \File::getByID($fileList);
             $ext = pathinfo($fileObject->getFileName(), PATHINFO_EXTENSION);
             $imageExtesions = array('jpg', 'jpeg', 'png', 'JPEG', 'PNG', 'JPG');
@@ -70,6 +69,9 @@ class Controller extends Package {
                 $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
                 if (file_exists($source_img)) {
                     $d = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
+                    if(!$d){
+                        OptimizedImage::save($fileList);
+                    }
                 }
             }
         });

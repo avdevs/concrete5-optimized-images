@@ -28,6 +28,7 @@ class OptimizedThumbnailImagesJob extends AbstractJob
         $config = $pkg->getConfig();
         $tinyPngApiKey = $config->get('optimizedImageSetting.tinyPngApiKey');
         $allowCustomThumbOptimize = $config->get('optimizedImageSetting.allowCustomThumbOptimize');
+        $statusMessage = '';
         if($allowCustomThumbOptimize == 1) {
             $fileList = scandir(Config::get('concrete.cache.directory'));
             $jobLastRunDate = OptimizedThumbImageJob::load();
@@ -41,9 +42,16 @@ class OptimizedThumbnailImagesJob extends AbstractJob
                         if ($fileModifiedDate > $jobLastRunDate) {
                             //Optimize image using tinyPngCompress
                             $d = OptimizedThumbImageJob::tinyPngCompress($source_img, $tinyPngApiKey);
+                            if($d){
+                                $statusMessage = $d;
+                                break;
+                            }
                         }
                     }
                 }
+            }
+            if($statusMessage != ''){
+                return t($statusMessage);
             }
             if (!$jobLastRunDate) {
                 OptimizedThumbImageJob::save(date("F d Y H:i:s"));
