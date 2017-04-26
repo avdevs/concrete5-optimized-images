@@ -8,7 +8,7 @@ class Controller extends Package {
 
     protected $pkgHandle = 'optimized_images';
     protected $appVersionRequired = '5.7.1';
-    protected $pkgVersion = '0.10.2';
+    protected $pkgVersion = '0.10.3';
     protected $map = [
         'optimizedImageSetting.tinyPngApiKey' => 'tinyPngApiKey',
         'optimizedImageSetting.allowCustomThumbOptimize' => 'allowCustomThumbOptimize',
@@ -60,7 +60,7 @@ class Controller extends Package {
         $pkg = Package::getByHandle($this->pkgHandle);
         $config = $pkg->getConfig();
         $allowCustomThumbOptimize = $config->get('optimizedImageSetting.allowCustomThumbOptimize');
-        if($allowCustomThumbOptimize == 1){
+        if($allowCustomThumbOptimize != 1){
             Events::addListener('on_file_add', function(){
                 $fileList = OptimizedImage::getLastRecord();
                 $pkg = Package::getByHandle('optimized_images');
