@@ -57,23 +57,28 @@ class Controller extends Package {
     }
 
     public function on_start() {
-        Events::addListener('on_file_add', function(){
-            $fileList = OptimizedImage::getLastRecord();
-            $pkg = Package::getByHandle('optimized_images');
-            $config = $pkg->getConfig();
-            $tinyPngApiKey = $config->get('optimizedImageSetting.tinyPngApiKey');
-            $fileObject = \File::getByID($fileList);
-            $ext = pathinfo($fileObject->getFileName(), PATHINFO_EXTENSION);
-            $imageExtesions = array('jpg', 'jpeg', 'png', 'JPEG', 'PNG', 'JPG');
-            if (in_array($ext, $imageExtesions)) {
-                $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
-                if (file_exists($source_img)) {
-                    $d = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
-                    if(!$d){
-                        OptimizedImage::save($fileList);
+        $pkg = Package::getByHandle($this->pkgHandle);
+        $config = $pkg->getConfig();
+        $allowCustomThumbOptimize = $config->get('optimizedImageSetting.allowCustomThumbOptimize');
+        if($allowCustomThumbOptimize == 1){
+            Events::addListener('on_file_add', function(){
+                $fileList = OptimizedImage::getLastRecord();
+                $pkg = Package::getByHandle('optimized_images');
+                $config = $pkg->getConfig();
+                $tinyPngApiKey = $config->get('optimizedImageSetting.tinyPngApiKey');
+                $fileObject = \File::getByID($fileList);
+                $ext = pathinfo($fileObject->getFileName(), PATHINFO_EXTENSION);
+                $imageExtesions = array('jpg', 'jpeg', 'png', 'JPEG', 'PNG', 'JPG');
+                if (in_array($ext, $imageExtesions)) {
+                    $source_img = DIR_FILES_UPLOADED_STANDARD . '/' . $fileObject->getFileResource()->getPath();
+                    if (file_exists($source_img)) {
+                        $d = OptimizedImage::tinyPngCompress($source_img, $tinyPngApiKey);
+                        if(!$d){
+                            OptimizedImage::save($fileList);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 }
