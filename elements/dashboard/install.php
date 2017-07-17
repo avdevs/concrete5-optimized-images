@@ -10,7 +10,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-2"><?= t('Allow Custom Thumbnail Image Optimization') ?></label>
+        <label class="control-label col-sm-2"><?= t('Disable image optimization on file upload') ?></label>
         <div class="col-sm-10">
             <input type="checkbox" name="allowCustomThumbOptimize" value="1" <?= $allowCustomThumbOptimize ? 'checked' :''; ?>>
         </div>
